@@ -7,7 +7,6 @@ tags: [NLP, attention, 算法,copynet]
 comments: true
 ---
 
-# CopyNet
 
 最近由于业务需求调研了 copynet，所以就准备以此作为博客的开篇啦，希望可以坚持下去~  
 在这里参考的 paper 是16年的《Incorporating Copying Mechanism in Sequence-to-Sequence Learning》，
