@@ -2,30 +2,28 @@
 layout: post
 title: CopyNet 学习笔记
 date: 2020-01-24
-Author: linxiaoye
+Author: Linxiaoye
 tags: [NLP, attention, 算法,copynet]
 comments: true
 ---
 
 # CopyNet
 
-最近由于业务需求调研了 copynet，所以就准备以此作为博客的开篇啦，希望可以坚持下去~
-在这里我参考的 paper 是《Incorporating Copying Mechanism in Sequence-to-Sequence Learning》，
+最近由于业务需求调研了 copynet，所以就准备以此作为博客的开篇啦，希望可以坚持下去~  
+在这里参考的 paper 是16年的《Incorporating Copying Mechanism in Sequence-to-Sequence Learning》，
 
 附上链接：[Incorporating Copying Mechanism in Sequence-to-Sequence Learning](https://arxiv.org/pdf/1603.06393.pdf)
 
-在我看来copynet和 attention 机制的思想十分类似（如有错误望不吝赐教），所以如果有attention的背景应该能更好的理解（当然，这篇文章中其实也用了attention），在这里先给出来几篇关于 attention 的佳作，可能哪次有时间了也会总结一下吧~
+在我看来copynet和 attention 机制的思想十分类似，所以如果有attention的背景应该能更好的理解（当然，这篇文章中其实也用了attention），下文中如有错误纰漏望不吝赐教~  
+在这里先给出来关于 attention 的佳作，可能哪次有时间了也会总结一下吧~
+链接：  
+[Attention Is All You Need] (https://arxiv.org/pdf/1706.03762.pdf)
+
+
 
 ## 引子
 看看论文中给出的一个例子，这是一个对话系统，当你说出Tony Jebara这个名字的时候，回答中也会大概率重复这个名字，这不就很类似一种 copy 的思想吗~那么思想有了，应该怎么把它变成一种数学表达，应用到模型中去呢？ 
-<html>
-<br/>
-
-<img src='../images/copy_net/copy_net_example.jpg' style='max-height: 1088px;max-width:276px'/>
-<br/>
-
-</html>
-
+![](../images/copy_net/copy_net_example.jpg)
 
 
 ## 结构图
@@ -36,7 +34,7 @@ comments: true
 其中，encoder 部分是一个双向的 lstm，每一个时间步对应一个输入，图上是意会（直接输入每一个字），实际上一般是会先对字（词）进行onehot编码，然后去look up embedding，输入的是embedding size大小的向量。  
 那么，如图所示，$$h_t$$ 对应的是每个时间步的encoder输出，你可以理解它们代表了输入的一些高维度特征（隐状态）。对这些$$h_t$$进行变化后将结果送给decoder解码，一般来说送的是最后一个时间步的输出（比如对应`tf.nn.bidirectional_dynamic_rnn`的话就是返回的`final_state`)。  
 解码部分为了便于理解，我们针对上图中 $$t=4$$ 这一个时刻来分析。首先，对于传统rnn（不考虑attention），$$s_t=f(y_{t−1}, s_{t−1})$$  
-![](../images/copy_net/dec.jpg)  
+<div align=center>![](../images/copy_net/dec.jpg)  
 加上 attention了以后，$$s_t = f(y_{t−1}, s_{t−1}, c_t)$$，其中 $$c_t$$ 是一个动态变长的context，具体可以看下图。那么我们可以很容易的看到，应用了attention机制以后，可以考虑encoder的每一个时刻的输出对s4状态的影响。  
 ![](../images/copy_net/attention-cons.jpg)  
 那么，copynet又是要改变哪些部分呢，接下来我们进一步的来分析这篇论文的结构框图。可以发现，encoder部分并不需要多做改变，升级的点都是针对的decoder模块，主要有两个部分，分别是状态的更新以及最后的映射。
