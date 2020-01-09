@@ -16,8 +16,8 @@ comments: true
 
 在我看来copynet和 attention 机制的思想十分类似，所以如果有attention的背景应该能更好的理解（当然，这篇文章中其实也用了attention），下文中如有错误纰漏望不吝赐教~  
 在这里先给出来关于 attention 的佳作，可能哪次有时间了也会总结一下吧~
-链接：  
-[Attention Is All You Need] (https://arxiv.org/pdf/1706.03762.pdf)
+
+链接：  [Attention Is All You Need] (https://arxiv.org/pdf/1706.03762.pdf)
 
 
 
@@ -34,7 +34,7 @@ comments: true
 其中，encoder 部分是一个双向的 lstm，每一个时间步对应一个输入，图上是意会（直接输入每一个字），实际上一般是会先对字（词）进行onehot编码，然后去look up embedding，输入的是embedding size大小的向量。  
 那么，如图所示，$$h_t$$ 对应的是每个时间步的encoder输出，你可以理解它们代表了输入的一些高维度特征（隐状态）。对这些$$h_t$$进行变化后将结果送给decoder解码，一般来说送的是最后一个时间步的输出（比如对应`tf.nn.bidirectional_dynamic_rnn`的话就是返回的`final_state`)。  
 解码部分为了便于理解，我们针对上图中 $$t=4$$ 这一个时刻来分析。首先，对于传统rnn（不考虑attention），$$s_t=f(y_{t−1}, s_{t−1})$$  
-<div align=center>![](../images/copy_net/dec.jpg)  
+<div align=center>![](../images/copy_net/dec.jpg)</div> 
 加上 attention了以后，$$s_t = f(y_{t−1}, s_{t−1}, c_t)$$，其中 $$c_t$$ 是一个动态变长的context，具体可以看下图。那么我们可以很容易的看到，应用了attention机制以后，可以考虑encoder的每一个时刻的输出对s4状态的影响。  
 ![](../images/copy_net/attention-cons.jpg)  
 那么，copynet又是要改变哪些部分呢，接下来我们进一步的来分析这篇论文的结构框图。可以发现，encoder部分并不需要多做改变，升级的点都是针对的decoder模块，主要有两个部分，分别是状态的更新以及最后的映射。
