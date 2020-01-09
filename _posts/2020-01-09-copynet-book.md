@@ -17,10 +17,12 @@ comments: true
 在我看来copynet和 attention 机制的思想十分类似（如有错误望不吝赐教），所以如果有attention的背景应该能更好的理解（当然，这篇文章中其实也用了attention），在这里先给出来几篇关于 attention 的佳作，可能哪次有时间了也会总结一下吧~
 
 ## 引子
-看看论文中给出的一个例子，这是一个对话系统，当你说出Tony Jebara这个名字的时候，回答中也会大概率重复这个名字，这不就很类似一种 copy 的思想吗~那么思想有了，应该怎么把它变成一种数学表达，应用到模型中去呢？  
+看看论文中给出的一个例子，这是一个对话系统，当你说出Tony Jebara这个名字的时候，回答中也会大概率重复这个名字，这不就很类似一种 copy 的思想吗~那么思想有了，应该怎么把它变成一种数学表达，应用到模型中去呢？ 
 <html>
+<br/>
 
 <img src='../images/copy_net/copy_net_example.jpg' style='max-height: 1088px;max-width:276px'/>
+<br/>
 
 </html>
 
